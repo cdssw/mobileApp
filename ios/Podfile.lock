@@ -1813,6 +1813,8 @@ PODS:
     - Yoga
   - react-native-image-resizer (1.4.5):
     - React-Core
+  - react-native-orientation-locker (1.7.0):
+    - React-Core
   - react-native-safe-area-context (5.6.2):
     - boost
     - DoubleConversion
@@ -2584,6 +2586,7 @@ DEPENDENCIES:
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
   - "react-native-image-editor (from `../node_modules/@react-native-community/image-editor`)"
   - react-native-image-resizer (from `../node_modules/react-native-image-resizer`)
+  - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
@@ -2715,6 +2718,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/image-editor"
   react-native-image-resizer:
     :path: "../node_modules/react-native-image-resizer"
+  react-native-orientation-locker:
+    :path: "../node_modules/react-native-orientation-locker"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-webview:
@@ -2835,6 +2840,7 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: d1ee999dc9052e23f6488b730fa2d383a4ea40e5
   react-native-image-editor: 2d7c254cc514d94b6580ff0a603a8e9d19fd1871
   react-native-image-resizer: 17b2d73c030975b6543395c7e7368bc8774c5efa
+  react-native-orientation-locker: cc6f357b289a2e0dd2210fea0c52cb8e0727fdaa
   react-native-safe-area-context: c00143b4823773bba23f2f19f85663ae89ceb460
   react-native-webview: 654f794a7686b47491cf43aa67f7f428bea00eed
   React-NativeModulesApple: 46690a0fe94ec28fc6fc686ec797b911d251ded0

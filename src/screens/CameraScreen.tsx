@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Alert, Dimensions } from 'react-native';
 import ImageEditor from '@react-native-community/image-editor';
 import { Camera, useCameraDevice, useCameraPermission } from 'react-native-vision-camera';
+import Orientation from 'react-native-orientation-locker';
 
 const UPLOAD_URL = 'http://10.110.130.109:3000/api/upload';
 
@@ -33,6 +34,18 @@ const CameraScreen = ({ onClose, onUploadComplete }: CameraScreenProps) => {
     const device = useCameraDevice('back');
     const camera = useRef<Camera>(null);
     const [isProcessing, setIsProcessing] = useState(false);
+
+    useEffect(() => {
+        // 세로 모드로 잠금
+        Orientation.lockToPortrait();
+        console.log('[CameraScreen] Orientation locked to portrait');
+
+        // 컴포넌트 언마운트 시 잠금 해제
+        return () => {
+            Orientation.unlockAllOrientations();
+            console.log('[CameraScreen] Orientation unlocked');
+        };
+    }, []);
 
     useEffect(() => {
         if (!hasPermission) {
