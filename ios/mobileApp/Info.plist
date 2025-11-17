@@ -35,6 +35,10 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>To scan your passport, the app needs access to your camera.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Your message to the user about why you need photo library access</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Your message to the user about why you need microphone access</string>	
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>RCTNewArchEnabled</key>

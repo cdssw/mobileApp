@@ -5,7 +5,9 @@ import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import CameraScreen from './src/screens/CameraScreen';
 
-const WEBVIEW_URL = 'http://192.168.219.103:3000/user/ocr';
+
+// const WEBVIEW_URL = 'http://192.168.219.103:3000/user/ocr';
+const WEBVIEW_URL = 'http://10.110.130.109:3000/user/ocr';
 
 const App = () => {
   const webViewRef = useRef<WebView>(null);
