@@ -1,12 +1,10 @@
-// mobileApp/src/App.tsx (WebView 최적화 + imageUrl 전달)
+// mobileApp/src/App.tsx (WebView 크기 고정 버전)
 
 import React, { useRef, useState } from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import CameraScreen from './src/screens/CameraScreen';
 
-
-// const WEBVIEW_URL = 'http://192.168.219.103:3000/user/ocr';
 const WEBVIEW_URL = 'http://10.110.130.109:3000/user/ocr';
 
 const App = () => {
@@ -24,52 +22,100 @@ const App = () => {
     }
   };
 
-  // --- 👇 핵심 수정 부분 ---
   const handleUploadComplete = (result: { uploadId: string; imageUrl: string }) => {
     console.log(`[App.tsx] Upload complete. Received result:`, result);
-    setCameraOpen(false);
 
+    // ✨ 먼저 WebView에 메시지 전송 (카메라 닫기 전)
+    if (webViewRef.current) {
+      console.log(`[App.tsx] Injecting UPLOAD_COMPLETE message with payload to WebView.`);
+      const message = { type: 'UPLOAD_COMPLETE', payload: result };
+      const script = `window.postMessage(${JSON.stringify(message)}, '*'); true;`;
+      webViewRef.current.injectJavaScript(script);
+    }
+
+    // ✨ 메시지 전송 후 카메라 닫기
     setTimeout(() => {
-      if (webViewRef.current) {
-        console.log(`[App.tsx] Injecting UPLOAD_COMPLETE message with payload to WebView.`);
-        // result 객체 전체를 payload로 전달합니다.
-        const message = { type: 'UPLOAD_COMPLETE', payload: result };
-        const script = `window.postMessage(${JSON.stringify(message)}, '*'); true;`;
-        webViewRef.current.injectJavaScript(script);
-      } else {
-        console.error("[App.tsx] WebView ref is null after timeout. Injection failed.");
-      }
-    }, 500);
+      setCameraOpen(false);
+    }, 100);
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={isCameraOpen ? styles.hidden : styles.visible}>
+      {/* ✨ WebView를 항상 전체 크기로 유지 */}
+      <View style={styles.webviewContainer}>
         <WebView
           ref={webViewRef}
           source={{ uri: WEBVIEW_URL }}
+          style={styles.webview}
           onMessage={handleWebViewMessage}
           javaScriptEnabled={true}
           domStorageEnabled={true}
           originWhitelist={['*']}
-          incognito={isCameraOpen}
+          // ✨ incognito 제거 (WebView 재생성 방지)
           applicationNameForUserAgent="YourAppName/1.0"
+          // ✨ 캐시 활성화로 빠른 복원
+          cacheEnabled={true}
+          cacheMode="LOAD_CACHE_ELSE_NETWORK"
+          // ✨ 스크롤 관련 안정화
+          scrollEnabled={true}
+          bounces={false}
+          showsVerticalScrollIndicator={false}
+          // ✨ viewport 메타 태그
+          injectedJavaScriptBeforeContentLoaded={`
+            window.isReactNativeWebView = true;
+            true;
+          `}
+          injectedJavaScript={`
+            const meta = document.createElement('meta');
+            meta.setAttribute('name', 'viewport');
+            meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+            const existingMeta = document.querySelector('meta[name="viewport"]');
+            if (existingMeta) {
+              existingMeta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+            } else {
+              document.getElementsByTagName('head')[0].appendChild(meta);
+            }
+            true;
+          `}
         />
       </View>
+
+      {/* ✨ 카메라를 절대 위치로 WebView 위에 오버레이 */}
       {isCameraOpen && (
-        <CameraScreen
-          onClose={() => setCameraOpen(false)}
-          onUploadComplete={handleUploadComplete}
-        />
+        <View style={styles.cameraContainer}>
+          <CameraScreen
+            onClose={() => setCameraOpen(false)}
+            onUploadComplete={handleUploadComplete}
+          />
+        </View>
       )}
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  visible: { flex: 1 },
-  hidden: { flex: 0, height: 0, width: 0, position: 'absolute' },
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+  },
+  webviewContainer: {
+    flex: 1,
+    // ✨ 크기가 절대 변하지 않음
+  },
+  webview: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+  },
+  // ✨ 카메라를 절대 위치로 전체 화면 오버레이
+  cameraContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 1000,
+    backgroundColor: '#000000',
+  },
 });
 
 export default App;

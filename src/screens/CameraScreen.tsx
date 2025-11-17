@@ -183,7 +183,6 @@ const CameraScreen = ({ onClose, onUploadComplete }: CameraScreenProps) => {
             }
 
             console.log('[CameraScreen] ✅ Upload successful!');
-            Alert.alert('성공', '사진이 업로드되었습니다!');
             onUploadComplete(result);
 
         } catch (error) {
