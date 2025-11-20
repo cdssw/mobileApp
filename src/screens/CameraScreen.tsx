@@ -6,7 +6,8 @@ import ImageEditor from '@react-native-community/image-editor';
 import { Camera, useCameraDevice, useCameraPermission } from 'react-native-vision-camera';
 import Orientation from 'react-native-orientation-locker';
 
-const UPLOAD_URL = 'http://10.110.130.109:3000/api/upload';
+// const UPLOAD_URL = 'http://10.110.130.149:3000/api/upload';
+const UPLOAD_URL = 'http://192.168.219.103:3000/api/upload';
 
 interface CameraScreenProps {
     onClose: () => void;

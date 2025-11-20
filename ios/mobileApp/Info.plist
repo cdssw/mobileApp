@@ -61,5 +61,18 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<!-- ✨ 파일 공유 권한 -->
+	<key>UIFileSharingEnabled</key>
+	<true/>
+	
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	
+	<!-- Photos 라이브러리 설명 (선택사항) -->
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>PDF 파일을 저장하기 위해 권한이 필요합니다.</string>
+	
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>PDF 파일을 불러오기 위해 권한이 필요합니다.</string>	
 </dict>
 </plist>
